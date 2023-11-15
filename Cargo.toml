@@ -1,0 +1,30 @@
+[package]
+name = "orphism"
+version = "0.1.0"
+edition = "2021"
+authors = ["Chris Olstrom <chris@olstrom.com>"]
+license = "MIT"
+repository = "https://github.com/vtubing/orphism"
+documentation = "https://docs.rs/orphism"
+description = "a library for interacting with a certain format sometimes used for VTuber model assets"
+
+[dependencies]
+cap-std = "^ 2"
+derivative = "^ 2"
+log = "^ 0.4"
+remain = "^ 0.2"
+serde = { version = "^ 1", features = ["derive"] }
+serde_json = "^ 1"
+serde_yaml = "^ 0.9"
+strum = { version = "^ 0.25", features = ["derive"] }
+thiserror = "^ 1"
+
+cdi3 = { path = "../cdi3", version = "0.1.0" }
+exp3 = { path = "../exp3", version = "0.1.0" }
+moc3 = { path = "../moc3", version = "0.1.0" }
+model3 = { path = "../model3", version = "0.1.0" }
+motion3 = { path = "../motion3", version = "0.1.0" }
+motionsync3 = { path = "../motionsync3", version = "0.1.0" }
+physics3 = { path = "../physics3", version = "0.1.0" }
+pose3 = { path = "../pose3", version = "0.1.0" }
+userdata3 = { path = "../userdata3", version = "0.1.0" }
