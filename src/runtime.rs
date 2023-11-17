@@ -1,28 +1,8 @@
 use crate::model::Model;
+use crate::{Error, Result};
 use cap_std::fs::{Dir, File};
 use std::io::Read;
 use std::path::{Path, PathBuf};
-
-#[derive(Debug, thiserror::Error)]
-#[remain::sorted]
-pub enum RuntimeError {
-  #[error(transparent)]
-  Io(#[from] std::io::Error),
-  #[error(transparent)]
-  Json(#[from] serde_json::Error),
-  #[error("model has no parent directory: {0:?}")]
-  ModelHasNoParentDirectory(PathBuf),
-  #[error("model path is not a file: {0:?}")]
-  ModelPathIsNotAFile(PathBuf),
-  #[error("model path may not end with '..': {0:?}")]
-  ModelPathMayNotEndWithTrailingDots(PathBuf),
-  #[error("runtime path contains multiple models: {0:?}")]
-  RuntimePathContainsMultipleModels(PathBuf),
-  #[error("runtime path contains no models: {0:?}")]
-  RuntimePathContainsNoModels(PathBuf),
-  #[error("runtime path is not a directory: {0:?}")]
-  RuntimePathIsNotADirectory(PathBuf),
-}
 
 #[derive(Debug)]
 pub struct Runtime {
@@ -31,17 +11,17 @@ pub struct Runtime {
 }
 
 impl Runtime {
-  pub fn new_from_model_path(model: PathBuf) -> Result<Self, RuntimeError> {
+  pub fn new_from_model_path(model: PathBuf) -> Result<Self> {
     log::trace!("new_from_model_path({model:?}");
 
     if !model.is_file() {
-      return Err(RuntimeError::ModelPathIsNotAFile(model));
+      return Err(Error::ModelPathIsNotAFile(model));
     }
 
     match model.parent() {
-      None => Err(RuntimeError::ModelHasNoParentDirectory(model)),
+      None => Err(Error::ModelHasNoParentDirectory(model)),
       Some(parent) => match model.file_name() {
-        None => Err(RuntimeError::ModelPathMayNotEndWithTrailingDots(model)),
+        None => Err(Error::ModelPathMayNotEndWithTrailingDots(model)),
         Some(file_name) => {
           let root = Dir::from_std_file(std::fs::File::open(parent)?);
           let model = PathBuf::from(file_name);
@@ -51,11 +31,11 @@ impl Runtime {
     }
   }
 
-  pub fn new_from_runtime_path(root: PathBuf) -> Result<Self, RuntimeError> {
+  pub fn new_from_runtime_path(root: PathBuf) -> Result<Self> {
     log::trace!("new_from_runtime_path({root:?}");
 
     if !root.is_dir() {
-      return Err(RuntimeError::RuntimePathIsNotADirectory(root));
+      return Err(Error::RuntimePathIsNotADirectory(root));
     }
 
     let mut models = Vec::new();
@@ -69,30 +49,30 @@ impl Runtime {
     }
 
     match models.len() {
-      0 => Err(RuntimeError::RuntimePathContainsNoModels(root)),
+      0 => Err(Error::RuntimePathContainsNoModels(root)),
       1 => {
         let model = root.join(models.swap_remove(0));
         Self::new_from_model_path(model)
       }
-      _ => Err(RuntimeError::RuntimePathContainsMultipleModels(root)),
+      _ => Err(Error::RuntimePathContainsMultipleModels(root)),
     }
   }
 
-  pub fn open_dir<P>(&self, path: P) -> Result<Dir, RuntimeError>
+  pub fn open_dir<P>(&self, path: P) -> Result<Dir>
   where
     P: AsRef<Path>,
   {
     Ok(self.root.open_dir(path)?)
   }
 
-  pub fn open_file<P>(&self, path: P) -> Result<File, RuntimeError>
+  pub fn open_file<P>(&self, path: P) -> Result<File>
   where
     P: AsRef<Path>,
   {
     Ok(self.root.open(path)?)
   }
 
-  pub fn read_bytes<P>(&self, path: P) -> Result<Vec<u8>, RuntimeError>
+  pub fn read_bytes<P>(&self, path: P) -> Result<Vec<u8>>
   where
     P: AsRef<Path>,
   {
@@ -104,7 +84,7 @@ impl Runtime {
     Ok(buf)
   }
 
-  pub fn read_json<P, T>(&self, path: P) -> Result<T, RuntimeError>
+  pub fn read_json<P, T>(&self, path: P) -> Result<T>
   where
     P: AsRef<Path>,
     T: serde::de::DeserializeOwned,
@@ -112,7 +92,7 @@ impl Runtime {
     Ok(serde_json::from_slice(&self.read_bytes(path)?)?)
   }
 
-  pub fn load(&self) -> Result<Model, RuntimeError> {
-    self.read_json(self.model.as_path()).and_then(|model| Model::load(self, &model))
+  pub fn load_model(&self) -> Result<Model> {
+    self.read_json(self.model.as_path()).and_then(|model| Model::load(self, model))
   }
 }

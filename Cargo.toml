@@ -1,6 +1,6 @@
 [package]
 name = "orphism"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 authors = ["Chris Olstrom <chris@olstrom.com>"]
 license = "MIT"
@@ -11,20 +11,22 @@ description = "a library for interacting with a certain format sometimes used fo
 [dependencies]
 cap-std = "^ 2"
 derivative = "^ 2"
+infer = "^ 0.15"
 log = "^ 0.4"
+mediatype = { version = "^ 0.19", features = ["serde"] }
 remain = "^ 0.2"
 serde = { version = "^ 1", features = ["derive"] }
-serde_json = "^ 1"
+serde_json = { version = "^ 1", features = ["preserve_order"] }
 serde_yaml = "^ 0.9"
 strum = { version = "^ 0.25", features = ["derive"] }
 thiserror = "^ 1"
 
-cdi3 = { path = "../cdi3", version = "0.1.0" }
-exp3 = { path = "../exp3", version = "0.1.0" }
+cdi3 = { path = "../cdi3", version = "0.2.0" }
+exp3 = { path = "../exp3", version = "0.2.0" }
 moc3 = { path = "../moc3", version = "0.1.0" }
-model3 = { path = "../model3", version = "0.1.0" }
-motion3 = { path = "../motion3", version = "0.1.0" }
-motionsync3 = { path = "../motionsync3", version = "0.1.0" }
-physics3 = { path = "../physics3", version = "0.1.0" }
-pose3 = { path = "../pose3", version = "0.1.0" }
-userdata3 = { path = "../userdata3", version = "0.1.0" }
+model3 = { path = "../model3", version = "0.2.0" }
+motion3 = { path = "../motion3", version = "0.2.0" }
+motionsync3 = { path = "../motionsync3", version = "0.2.0" }
+physics3 = { path = "../physics3", version = "0.2.0" }
+pose3 = { path = "../pose3", version = "0.2.0" }
+userdata3 = { path = "../userdata3", version = "0.2.0" }
