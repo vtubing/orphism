@@ -48,7 +48,7 @@ cargo add orphism
 Or add the following line to your `Cargo.toml` (in the `[dependencies]` array):
 
 ```toml
-orphism = "^ 0.2"
+orphism = "^ 0.3"
 ```
 
 ## How do I use it?
