@@ -85,7 +85,7 @@ issue, along with the path it was attempting to load from.
 For these cases, there is a `Runtime::new_from_model_path` that allows you to
 disambiguate by targeting a specific model file.
 
-One you have a `Runtime`, you can call `.load_model()` on it to load the `Model`.
+Once you have a `Runtime`, you can call `.load_model()` on it to load the `Model`.
 
 ### Model
 
