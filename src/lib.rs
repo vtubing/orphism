@@ -8,6 +8,7 @@ pub use runtime::Runtime;
 
 pub type Result<T> = std::result::Result<T, Error>;
 
+pub use caff_archive as caff;
 pub use cdi3;
 pub use exp3;
 pub use moc3;

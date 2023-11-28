@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.0
+
+- (DEPENDENCY) `caff-archive` added to dependencies.
+- (FEATURE) `caff-archive` re-exported as `orphism::caff`.
+
 ## 0.2.0
 
 - (FEATURE) All types now implement `Clone` (except `Runtime`).

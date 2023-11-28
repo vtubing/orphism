@@ -1,6 +1,6 @@
 [package]
 name = "orphism"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
 authors = ["Chris Olstrom <chris@olstrom.com>"]
 license = "MIT"
@@ -21,6 +21,7 @@ serde_yaml = "^ 0.9"
 strum = { version = "^ 0.25", features = ["derive"] }
 thiserror = "^ 1"
 
+caff-archive = { path = "../caff-archive", version = "0.1.0" }
 cdi3 = { path = "../cdi3", version = "0.2.0" }
 exp3 = { path = "../exp3", version = "0.2.0" }
 moc3 = { path = "../moc3", version = "0.1.0" }

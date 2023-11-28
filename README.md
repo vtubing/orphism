@@ -37,13 +37,6 @@ they are all **very deliberately** out of scope for this project.
 
 2. To open a path for other Rustaceans to build cool things in the VTubing space.
 
-## How was this made?
-
-- Carefully, without using or referencing any code or libraries from the format vendor.
-- The [ImHex](https://github.com/WerWolv/ImHex) highlighting patterns from the [MOC3ingbird Exploit](https://github.com/OpenL2D/moc3ingbird) (CVE-2023-27566) were instrumental in understanding this format.
-- The discovery process for undocumented JSON formats is described [here](https://gist.github.com/colstrom/44b30fdddc8b0a9bfb44b09972a68676).
-- The discovery process for undocumented binary formats is described [here](https://gist.github.com/colstrom/f671d1583662de47b505a42a75b3a44b).
-
 ## How do I obtain this majestic tool?
 
 Run the following Cargo command in your project directory (assuming you have [cargo-edit](https://github.com/killercup/cargo-edit) installed):
@@ -74,6 +67,32 @@ fn main() {
 }
 ```
 
+## Core Data Types
+
+`orphism` primary revolves around two data types.
+
+### Runtime
+
+The `Runtime` struct in `orphism` represents the `runtime/` directory that
+contains your runtime model assets. This is essentially the state on disk, and
+mechanisms for loading from that state.
+
+Most runtimes contain a single model, along with other files relating to that
+model, and `orphism` will attempt to detect this. If there are multiple models
+detected in a given runtime directory, it will return an error indicating the
+issue, along with the path it was attempting to load from.
+
+For these cases, there is a `Runtime::new_from_model_path` that allows you to
+disambiguate by targeting a specific model file.
+
+One you have a `Runtime`, you can call `.load_model()` on it to load the `Model`.
+
+### Model
+
+The `Model` struct in `orphism` represents the contents of those files, once
+loaded and parsed. This is essentially the state in memory, and mechanisms for
+accessing and using the data.
+
 ## Project Crates
 
 `orphism` is made up of several related crates. The top-level crate is this one,
@@ -83,6 +102,7 @@ in addition to providing unified error handling.
 If you don't need all of it, each of the supported data formats has a separate
 crate, so you can load only what you need for whatever you want to do.
 
+- [caff-archive](https://github.com/vtubing/caff-archive)
 - [cdi3](https://github.com/vtubing/cdi3)
 - [exp3](https://github.com/vtubing/exp3)
 - [moc3](https://github.com/vtubing/moc3)
@@ -95,6 +115,13 @@ crate, so you can load only what you need for whatever you want to do.
 There's also a command-line interface that's mostly useful for testing and validation.
 
 - [orphist](https://github.com/vtubing/orphist)
+
+## How was this made?
+
+- Carefully, without using or referencing any code or libraries from the format vendor.
+- The [ImHex](https://github.com/WerWolv/ImHex) highlighting patterns from the [MOC3ingbird Exploit](https://github.com/OpenL2D/moc3ingbird) (CVE-2023-27566) were instrumental in understanding this format.
+- The discovery process for undocumented JSON formats is described [here](https://gist.github.com/colstrom/44b30fdddc8b0a9bfb44b09972a68676).
+- The discovery process for undocumented binary formats is described [here](https://gist.github.com/colstrom/f671d1583662de47b505a42a75b3a44b).
 
 ## License
 
