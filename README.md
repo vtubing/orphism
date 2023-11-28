@@ -15,7 +15,7 @@ What you do from there is up to you.
 ## What is this NOT?
 
 - There is no UI, this is a library for building other things with.
-- It does not provide a way to **create**, **edit** models, beyond data serialization and deserialization.
+- It does not provide a way to **create** or **edit** models, beyond data serialization and deserialization.
   - If you need this, the format vendor's official editor provides this.
 - It does not provide any sort of non-Rust interface to these assets.
   - If you need this, the format vendor's official SDK provides this.
